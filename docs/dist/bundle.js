@@ -4790,7 +4790,7 @@ var Board = (function () {
         this.get = function (row, col) {
             return _this.blocks[row][col];
         };
-        this.blocks = Board.generateBlocks(size);
+        this.blocks = R.compose(Board.createBombs, Board.generateBlocks)(size);
     }
     Board.generateBlocks = function (size) {
         var range = R.range(0, size);
@@ -4799,7 +4799,14 @@ var Board = (function () {
     };
     Board.generateRow = function (size) {
         var range = R.range(0, size);
-        return R.map(function () { return Board.randomBlock(); }, range);
+        return R.map(function () { return 0; }, range);
+    };
+    Board.createBombs = function (blocks) {
+        return Board.mapBlocks(blocks, Board.randomBlock);
+    };
+    Board.mapBlocks = function (blocks, mapper) {
+        var mapRow = R.map(mapper);
+        return R.map(mapRow, blocks);
     };
     Board.randomBlock = function () {
         if (Math.random() < 0.5) {

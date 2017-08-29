@@ -15,7 +15,7 @@ export class RichBlok {
 export class Board {
     blocks: Block[][];
     constructor(readonly size: number) {
-        this.blocks = Board.generateBlocks(size);
+        this.blocks = R.compose(Board.createBombs, Board.generateBlocks)(size);
     }
 
     getRows = (): Block[][] => {
@@ -35,7 +35,16 @@ export class Board {
 
     static generateRow(size: number): Block[] {
         const range = R.range(0, size);
-        return R.map(() => Board.randomBlock(), range);
+        return R.map((): Block => 0, range);
+    }
+
+    static createBombs(blocks: Block[][]): Block[][] {
+        return Board.mapBlocks(blocks, Board.randomBlock);
+    }
+
+    static mapBlocks(blocks: Block[][], mapper: (block: Block) => Block): Block[][] {
+        const mapRow: (row: Block[]) => Block[] = R.map(mapper);
+        return R.map(mapRow, blocks);
     }
 
     static randomBlock(): Block {
