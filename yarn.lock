@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@types/ramda@types/npm-ramda#dist":
+  version "0.24.3"
+  resolved "https://codeload.github.com/types/npm-ramda/tar.gz/45465aa13f454a9a5ef39fb6e0a5a8a468bb9633"
+
 "@types/react-dom@^15.5.4":
   version "15.5.4"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-15.5.4.tgz#3f75ba86a2ce9a7d1d9e7d1ee3f186f3a9652d8f"
@@ -558,6 +562,10 @@ prop-types@^15.5.10:
 prr@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/prr/-/prr-0.0.0.tgz#1a84b85908325501411853d0081ee3fa86e2926a"
+
+ramda@^0.24.1:
+  version "0.24.1"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.24.1.tgz#c3b7755197f35b8dc3502228262c4c91ddb6b857"
 
 react-dom@^15.6.1:
   version "15.6.1"
