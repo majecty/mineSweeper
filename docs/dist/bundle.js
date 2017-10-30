@@ -4772,14 +4772,14 @@ __export(__webpack_require__(126));
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var R = __webpack_require__(65);
-var RichBlok = (function () {
-    function RichBlok(block, board) {
+var RichBlock = (function () {
+    function RichBlock(block, ref) {
         this.block = block;
-        this.board = board;
+        this.ref = ref;
     }
-    return RichBlok;
+    return RichBlock;
 }());
-exports.RichBlok = RichBlok;
+exports.RichBlock = RichBlock;
 var Board = (function () {
     function Board(size) {
         var _this = this;
@@ -4790,7 +4790,7 @@ var Board = (function () {
         this.get = function (row, col) {
             return _this.blocks[row][col];
         };
-        this.blocks = R.compose(Board.createBombs, Board.generateBlocks)(size);
+        this.blocks = R.compose(Board.calculateNearBombs, Board.createBombs, Board.generateBlocks)(size);
     }
     Board.generateBlocks = function (size) {
         var range = R.range(0, size);
@@ -4808,6 +4808,14 @@ var Board = (function () {
         var mapRow = R.map(mapper);
         return R.map(mapRow, blocks);
     };
+    Board.mapBlocksIndexed = function (blocks, mapper) {
+        var mapIndexed = R.addIndex(R.map);
+        var mapRow = function (rowBlocks, i) {
+            var rowMapper = function (block, j) { return mapper(block, [i, j]); };
+            return mapIndexed(rowMapper, rowBlocks);
+        };
+        return mapIndexed(mapRow, blocks);
+    };
     Board.randomBlock = function () {
         if (Math.random() < 0.5) {
             return "bomb";
@@ -4815,6 +4823,31 @@ var Board = (function () {
         else {
             return 0;
         }
+    };
+    Board.calculateNearBombs = function (blocks) {
+        var richBlocks = Board.toRichBlocks(blocks);
+        Board.mapBlocks(richBlocks, function (_a) {
+            var block = _a.block, ref = _a.ref;
+            var count = Board.countNearBlocks(ref);
+            return new RichBlock(count, ref);
+        });
+        return [];
+    };
+    Board.toRichBlocks = function (blocks) {
+        var toRichBlock = function (block, _a) {
+            var row = _a[0], column = _a[1];
+            return ({
+                block: block,
+                ref: {
+                    blocks: blocks,
+                    pos: { row: row, column: column }
+                }
+            });
+        };
+        return Board.mapBlocksIndexed(blocks, toRichBlock);
+    };
+    Board.countNearBlocks = function (ref) {
+        return 0;
     };
     return Board;
 }());
